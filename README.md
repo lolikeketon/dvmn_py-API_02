@@ -34,7 +34,7 @@ pip install requests python-dotenv
 Создай файл `.env` в корне проекта и добавь в него токен VK:
 
 ```env
-VK_API=vk1.a.your_long_access_token_here
+VK_API=your_vk_token_here
 ```
 
 ## Запуск
@@ -69,4 +69,3 @@ $ python main.py
 - `count_clicks(token, url)` — запрашивает статистику `utils.getLinkStats`
 - `is_shorten_link(url)` — проверяет домен `vk.cc`
 - `main()` — управляет вводом/выводом и логикой
-- 
