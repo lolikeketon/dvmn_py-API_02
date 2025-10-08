@@ -1,4 +1,4 @@
-from os import getenv
+from os import environ
 from urllib.parse import urlparse
 
 import requests
@@ -12,9 +12,9 @@ def shorten_link(token, url):
         'url': url
     }
 
-    work_url = 'https://api.vk.ru/method/utils.getShortLink'
+    url_for_short_link = 'https://api.vk.ru/method/utils.getShortLink'
 
-    response = requests.get(work_url, params=payload)
+    response = requests.get(url_for_short_link, params=payload)
     response.raise_for_status()
 
     return response.json()
@@ -28,35 +28,46 @@ def count_clicks(token, url):
         'interval': 'forever'
     }
 
-    work_url = 'https://api.vk.ru/method/utils.getLinkStats'
+    url_for_link_stats = 'https://api.vk.ru/method/utils.getLinkStats'
 
-    response = requests.get(work_url, params=payload)
+    response = requests.get(url_for_link_stats, params=payload)
     response.raise_for_status()
 
     return response.json()
 
 
-def is_shorten_link(url):
-    return urlparse(url).netloc == 'vk.cc'
+def is_shorten_link(token, url):
+    payload = {
+        'access_token': token,
+        'v': 5.199,
+        'key': urlparse(url).path[1:7]
+    }
+
+    url_for_link_check = 'https://api.vk.ru/method/utils.getLinkStats'
+
+    response = requests.get(url_for_link_check, params=payload)
+    response.raise_for_status()
+
+    return not 'error' in response.json()
 
 
 def main():
     load_dotenv()
 
-    api_vk = getenv('VK_API')
+    vk_token = environ['TOKEN_VK']
 
     user_url = input('Введите ссылку: ')
 
-    if is_shorten_link(user_url):
+    if is_shorten_link(vk_token, user_url):
         try:
-            stats = count_clicks(api_vk, user_url)
+            stats = count_clicks(vk_token, user_url)
             print('Количество переходов по ссылке:', stats['response']['stats'][0]['views'])
         except KeyError:
             print('Вы ввели не правильную ссылку')
             print(stats['error'])
     else:
         try:
-            short = shorten_link(api_vk, user_url)
+            short = shorten_link(vk_token, user_url)
             print('Сокращённая ссылка:', short['response']['short_url'])
         except KeyError:
             print('Вы ввели не правильную ссылку')
