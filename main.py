@@ -12,9 +12,9 @@ def shorten_link(token, url):
         'url': url
     }
 
-    url_for_short_link = 'https://api.vk.ru/method/utils.getShortLink'
+    short_api_url = 'https://api.vk.ru/method/utils.getShortLink'
 
-    response = requests.get(url_for_short_link, params=payload)
+    response = requests.get(short_api_url, params=payload)
     response.raise_for_status()
 
     return response.json()
@@ -28,9 +28,9 @@ def count_clicks(token, url):
         'interval': 'forever'
     }
 
-    url_for_link_stats = 'https://api.vk.ru/method/utils.getLinkStats'
+    stats_api_url = 'https://api.vk.ru/method/utils.getLinkStats'
 
-    response = requests.get(url_for_link_stats, params=payload)
+    response = requests.get(stats_api_url, params=payload)
     response.raise_for_status()
 
     return response.json()
@@ -43,9 +43,9 @@ def is_shorten_link(token, url):
         'key': urlparse(url).path[1:7]
     }
 
-    url_for_link_check = 'https://api.vk.ru/method/utils.getLinkStats'
+    check_api_url = 'https://api.vk.ru/method/utils.getLinkStats'
 
-    response = requests.get(url_for_link_check, params=payload)
+    response = requests.get(check_api_url, params=payload)
     response.raise_for_status()
 
     return not 'error' in response.json()
@@ -54,7 +54,7 @@ def is_shorten_link(token, url):
 def main():
     load_dotenv()
 
-    vk_token = environ['TOKEN_VK']
+    vk_token = environ['VK_TOKEN']
 
     user_url = input('Введите ссылку: ')
 
