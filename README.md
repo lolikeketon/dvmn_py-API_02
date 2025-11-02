@@ -2,8 +2,8 @@
 
 Скрипт для сокращения ссылок через VK (`vk.cc`) и просмотра количества переходов по уже сокращённой ссылке.
 
-- Если ввести обычный URL — получишь короткую ссылку `vk.cc/...`.
-- Если ввести уже сокращённую ссылку `vk.cc/...` — увидишь суммарное число кликов по ней.
+- Если передать обычный URL — получишь короткую ссылку `vk.cc/...`.
+- Если передать уже сокращённую ссылку `vk.cc/...` — увидишь суммарное число кликов по ней.
 
 ## Требования
 
@@ -25,7 +25,8 @@ pip install requests python-dotenv
 
 > Или с файлом зависимостей:
 > ```bash
-> echo "requests\npython-dotenv" > requirements.txt
+> echo "requests
+python-dotenv" > requirements.txt
 > pip install -r requirements.txt
 > ```
 
@@ -34,32 +35,36 @@ pip install requests python-dotenv
 Создай файл `.env` в корне проекта и добавь в него токен VK:
 
 ```env
-VK_API=your_vk_token_here
+VK_TOKEN=your_vk_token_here
 ```
 
 ## Запуск
 
+Теперь скрипт запускается сразу с аргументом — ссылкой:
+
 ```bash
-python main.py
+python main.py https://example.com
 ```
 
-Скрипт спросит ссылку во вводе.
+или
+
+```bash
+python main.py https://vk.cc/abcd12
+```
 
 ### Примеры
 
 **1) Сократить обычную ссылку**
 
 ```
-$ python main.py
-Введите ссылку: https://example.com/some/long/path
+$ python main.py https://example.com/some/long/path
 Сокращённая ссылка: https://vk.cc/abcd12
 ```
 
 **2) Посмотреть клики по короткой ссылке**
 
 ```
-$ python main.py
-Введите ссылку: https://vk.cc/abcd12
+$ python main.py https://vk.cc/abcd12
 Количество переходов по ссылке: 42
 ```
 
@@ -67,5 +72,5 @@ $ python main.py
 
 - `shorten_link(token, url)` — делает запрос в `utils.getShortLink`
 - `count_clicks(token, url)` — запрашивает статистику `utils.getLinkStats`
-- `is_shorten_link(url)` — проверяет домен `vk.cc`
-- `main()` — управляет вводом/выводом и логикой
+- `is_shorten_link(token, url)` — проверяет, является ли ссылка сокращённой VK
+- `main()` — загружает токен, парсит аргументы, определяет режим работы
