@@ -25,8 +25,7 @@ pip install requests python-dotenv
 
 > Или с файлом зависимостей:
 > ```bash
-> echo "requests
-python-dotenv" > requirements.txt
+> echo -e "requests\npython-dotenv" > requirements.txt
 > pip install -r requirements.txt
 > ```
 
