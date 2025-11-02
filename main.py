@@ -3,7 +3,7 @@ from urllib.parse import urlparse
 
 import requests
 from dotenv import load_dotenv
-
+import argparse
 
 def shorten_link(token, url):
     payload = {
@@ -56,7 +56,12 @@ def main():
 
     vk_token = environ['VK_TOKEN']
 
-    user_url = input('Введите ссылку: ')
+    parser = argparse.ArgumentParser(description='Сокращает вашу ссылку, если ссылка сокращена, показывает количество переходов по ней')
+
+    parser.add_argument('link', help='Ваша ссылка')
+    args = parser.parse_args()
+
+    user_url = args.link
 
     if is_shorten_link(vk_token, user_url):
         try:
