@@ -5,6 +5,7 @@ import requests
 from dotenv import load_dotenv
 import argparse
 
+
 def shorten_link(token, url):
     payload = {
         'access_token': token,
